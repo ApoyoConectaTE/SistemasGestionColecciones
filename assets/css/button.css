@@ -1,0 +1,22 @@
+@layer button {
+  button,
+  .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--gap);
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size);
+    border: none;
+    border-radius: 0px;
+    background: var(--color-primary);
+    color: var(--color-quaternary);
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  button:hover,
+  .button:hover {
+    background: var(--color-secondary);
+  }
+}

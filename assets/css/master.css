@@ -1,0 +1,63 @@
+@layer reset, root, base, grid, text, spacers, button, utilities, mobileGrid, tooltip, responsive;
+
+@import "reset.css" layer(reset);
+@import "root.css";
+@import "base.css" layer(base);
+@import "grid.css";
+@import "grid-movil.css" layer(mobileGrid);
+@import "text.css";
+@import "spacers.css";
+@import "button.css" layer(button);
+@import "utilities.css" layer(utilities);
+@import "tooltip.css";
+@import "responsive.css" layer(responsive);
+
+@layer master {
+  body {
+    background-image: url(../img/bck.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  nav {
+    ul {
+      list-style: none;
+
+      li {
+        margin-left: calc(var(--gap));
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  h3 {
+    color: var(--color-primary);
+  }
+
+  p.destacado {
+    color: var(--color-secondary);
+  }
+
+  .tooltips {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  select {
+    width: 100%;
+    padding: 8px 20px;
+    text-align: center;
+    background-color: var(--color-secondary);
+    color: var(--color-quaternary);
+    font-size: 18px;
+    font-weight: var(--font-weight-bold);
+  }
+
+  .logos {
+    max-width: 50%;
+    margin: 0 auto;
+  }
+}
