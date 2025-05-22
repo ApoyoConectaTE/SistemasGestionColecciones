@@ -110,8 +110,8 @@ function renderComparisonTable() {
 
     comparisonTableContainer.innerHTML = tableHtml; // Inject generated HTML
   } else {
-    noSelectionMessage.classList.remove("hide"); // Show no selection message
-    comparisonTableContainer.classList.add("hide"); // Hide table container
+    noSelectionMessage.classList.remove("hidden"); // Show no selection message
+    comparisonTableContainer.classList.add("hidden"); // Hide table container
   }
 }
 
@@ -123,6 +123,11 @@ function renderComparisonTable() {
 function handleProductChange(event, productNum) {
   const selectedName = event.target.value;
   const product = platformData.find((p) => p.Nombre === selectedName);
+
+  if (!product) {
+    console.error(`Producto no encontrado con el nombre: ${selectedName}`);
+    return;
+  }
 
   if (productNum === 1) {
     selectedProduct1 = product;

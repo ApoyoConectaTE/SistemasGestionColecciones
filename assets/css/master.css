@@ -1,15 +1,15 @@
 @layer reset, root, base, grid, text, spacers, button, utilities, mobileGrid, tooltip, responsive;
 
 @import "reset.css" layer(reset);
-@import "root.css";
+@import "root.css" layer(root);
 @import "base.css" layer(base);
-@import "grid.css";
+@import "grid.css" layer(grid);
 @import "grid-movil.css" layer(mobileGrid);
-@import "text.css";
-@import "spacers.css";
+@import "text.css" layer(text);
+@import "spacers.css" layer(spacers);
 @import "button.css" layer(button);
 @import "utilities.css" layer(utilities);
-@import "tooltip.css";
+@import "tooltip.css" layer(tooltip);
 @import "responsive.css" layer(responsive);
 
 @layer master {
