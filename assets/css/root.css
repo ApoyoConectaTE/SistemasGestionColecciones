@@ -1,0 +1,28 @@
+@import "font.css" layer(font);
+
+@layer root {
+  :root {
+    --columns: 12;
+    --gap: 1rem;
+    --column-size: calc(100% / var(--columns));
+
+    --font-family-sans: "Roboto", sans-serif;
+
+    --font-weight-thin: 100;
+    --font-weight-extralight: 200;
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --font-weight-black: 900;
+
+    --font-size: 16px;
+
+    --color-primary: #d86445;
+    --color-secondary: #f4996a;
+    --color-tertiary: #1d1d1b;
+    --color-quaternary: #ffffff;
+  }
+}

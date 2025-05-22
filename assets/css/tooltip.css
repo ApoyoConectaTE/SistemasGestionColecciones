@@ -1,0 +1,66 @@
+@layer tooltip {
+  .tooltip-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tooltip-text {
+    visibility: hidden;
+    min-width: 330px;
+    max-width: 330px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 0.5rem;
+    padding: 1.75rem 1rem 1rem 1rem;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0.3125rem;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+  }
+
+  .tooltip-checkbox {
+    display: none;
+  }
+
+  .tooltip-checkbox:checked + .tooltip-button-click + .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .tooltip-close-button {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.5rem;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: #ccc;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    transition: color 0.2s ease-in-out;
+  }
+
+  .tooltip-close-button:hover {
+    color: #fff;
+  }
+}

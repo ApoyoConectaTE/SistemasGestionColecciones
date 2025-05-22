@@ -1,0 +1,66 @@
+@layer portatil {
+  @media (max-width: 1024px) {
+    .tooltips {
+      .button {
+        min-width: 175px;
+      }
+
+      .tooltip-text {
+        left: 50%;
+      }
+      .tooltip-text::after {
+        left: 50%;
+      }
+    }
+  }
+}
+
+@layer tablet {
+  @media (max-width: 768px) {
+    nav {
+      justify-content: center;
+      .logo {
+        display: none;
+
+        &.only-mobile {
+          display: block;
+        }
+      }
+    }
+
+    .tooltips {
+      .button {
+        min-width: fit-content;
+      }
+      .tooltip-text {
+        min-width: 270px;
+        max-width: 270px;
+        left: 50%;
+      }
+      .tooltip-text::after {
+        left: 50%;
+      }
+    }
+  }
+}
+
+@layer movil {
+  @media (max-width: 425px) {
+    button,
+    .button {
+      justify-content: space-between;
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
+    }
+
+    .tooltips {
+      flex-direction: column;
+    }
+
+    .tooltip-text {
+      min-width: 310px;
+      max-width: 310px;
+    }
+  }
+}
