@@ -15,7 +15,7 @@
     padding: 1.75rem 1rem 1rem 1rem;
     position: absolute;
     z-index: 10;
-    bottom: 125%;
+    top: 115%;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
@@ -27,12 +27,12 @@
   .tooltip-text::after {
     content: "";
     position: absolute;
-    top: 100%;
+    bottom: 100%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50);
     border-width: 0.3125rem;
     border-style: solid;
-    border-color: #333 transparent transparent transparent;
+    border-color: transparent transparent #333 transparent;
   }
 
   .tooltip-checkbox {

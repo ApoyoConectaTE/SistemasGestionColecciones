@@ -55,44 +55,79 @@ function formatValue(value) {
 
 /**
  * Renders a single attribute row for the comparison table.
- * The attribute name is now displayed as a title within each value cell.
- * @param {string} attributeName - The name of the attribute.
- * @param {*} value1 - The value for the first platform.
- * @param {*} value2 - The value for the second platform.
+ * Each product's cell in the row will list the specified attributes and their values.
+ * If a single attribute is provided, it spans the full width of the cell's content area.
+ * If multiple attributes are provided, they are laid out in columns (e.g., col-4).
+ * @param {string[]} attributeNames - An array of attribute names to display in this row.
+ * @param {object} product1Data - The data object for the first platform.
+ * @param {object} product2Data - The data object for the second platform.
  * @returns {string} The HTML string for the row.
  */
-function renderAttributeRow(attributeName, value1, value2) {
+function renderAttributeRow(attributeNames, product1Data, product2Data) {
+  const generateCellHtml = (productData) => {
+    if (attributeNames.length === 1) {
+      // Single attribute: render it to take full width (col-12)
+      const attrName = attributeNames[0];
+      const value = productData.hasOwnProperty(attrName) ? productData[attrName] : "-";
+      return `
+        <div class="col-12 p-y-1 p-x-1">
+          <p class="m-b-0 destacado"><strong>${attrName}:</strong></p>
+          <p class="m-b-0">${formatValue(value)}</p>
+        </div>
+      `;
+    } else {
+      // Multiple attributes: use existing col-4 layout
+      return attributeNames
+        .map((attrName) => {
+          const value = productData.hasOwnProperty(attrName) ? productData[attrName] : "-";
+          return `
+            <div class="col-4 item border-r p-y-1 p-x-1">
+              <p class="m-b-0 destacado"><strong>${attrName}:</strong></p>
+              <p class="m-b-0">${formatValue(value)}</p>
+            </div>
+          `;
+        })
+        .join("");
+    }
+  };
+
+  const product1HtmlContent = generateCellHtml(product1Data);
+  const product2HtmlContent = generateCellHtml(product2Data);
+
   return `
-      <div class="row">
-          <div class="col-5 offset-1 border p-y-1 p-x-3">
-              <p class="m-b-0 destacado"><strong>${attributeName}:</strong></p>
-              <p>${formatValue(value1)}</p>
+      <div class="row p-r-1">
+        <div class="col-6 border">
+          <div class="row">
+          ${product1HtmlContent}
           </div>
-          <div class="col-5 border p-y-1 p-x-3">
-              <p class="m-b-0 destacado"><strong>${attributeName}:</strong></p>
-              <p>${formatValue(value2)}</p>
+        </div>
+        <div class="col-6 border">
+          <div class="row">
+            ${product2HtmlContent}
           </div>
+        </div>
       </div>
   `;
 }
 
 /**
  * Renders the entire comparison table based on selected products.
+ * "Acciones" is displayed first on its own line.
+ * Remaining attributes are grouped: first 3, last 3, and middle ones individually.
  */
-
 function renderComparisonTable() {
   if (selectedProduct1 && selectedProduct2) {
     noSelectionMessage.classList.add("hidden"); // Hide no selection message
     comparisonTableContainer.classList.remove("hidden"); // Show table container
 
     let tableHtml = `
-          <div class="row">
-              <div class="col-5 align-content-center offset-1 border">
+          <div class="row p-r-1">
+              <div class="col-6 align-content-center border">
                   <a href="${selectedProduct1.Enlace}" target="_blank" rel="noopener noreferrer">
                   <img class="logos" src="${selectedProduct1.logo}" alt="${selectedProduct1.Nombre}">
                   </a>
               </div>
-              <div class="col-5 align-content-center border">
+              <div class="col-6 align-content-center border">
                   <a href="${selectedProduct2.Enlace}" target="_blank" rel="noopener noreferrer">
                       <img class="logos" src="${selectedProduct2.logo}" alt="${selectedProduct2.Nombre}">
                   </a>
@@ -100,13 +135,54 @@ function renderComparisonTable() {
           </div>
       `;
 
-    // Iterate over keys to render attribute rows
-    Object.keys(selectedProduct1).forEach((key) => {
-      // Exclude 'Nombre', 'Enlace', and 'logo' as they are handled in the header/logo section
-      if (key !== "Nombre" && key !== "Enlace" && key !== "logo") {
-        tableHtml += renderAttributeRow(key, selectedProduct1[key], selectedProduct2[key]);
-      }
+    // Get all attribute keys, excluding those handled in the header
+    const allProductKeys = Object.keys(selectedProduct1).filter((key) => key !== "Nombre" && key !== "Enlace" && key !== "logo");
+
+    const accionesKey = "Acciones";
+    let remainingAttributeKeys = [...allProductKeys];
+
+    // Render "Acciones" first if it exists
+    if (allProductKeys.includes(accionesKey)) {
+      tableHtml += renderAttributeRow([accionesKey], selectedProduct1, selectedProduct2);
+      remainingAttributeKeys = allProductKeys.filter((key) => key !== accionesKey);
+    }
+
+    // Define the desired order for the REMAINING attributes
+    const desiredOrderForRemaining = ["Estándares", "Alfabetismos", "Mantenimiento", "Escalabilidad", "Costos", "Tipo de licencia"];
+
+    // Sort the REMAINING attributes
+    remainingAttributeKeys.sort((a, b) => {
+      const indexA = desiredOrderForRemaining.indexOf(a);
+      const indexB = desiredOrderForRemaining.indexOf(b);
+
+      if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      return a.localeCompare(b); // Fallback for keys not in desiredOrderForRemaining
     });
+
+    const n = remainingAttributeKeys.length;
+
+    if (n === 0) {
+      // No more attributes to display after "Acciones"
+    } else if (n <= 3) {
+      tableHtml += renderAttributeRow(remainingAttributeKeys, selectedProduct1, selectedProduct2);
+    } else if (n > 3 && n <= 6) {
+      tableHtml += renderAttributeRow(remainingAttributeKeys.slice(0, 3), selectedProduct1, selectedProduct2);
+      tableHtml += renderAttributeRow(remainingAttributeKeys.slice(3), selectedProduct1, selectedProduct2);
+    } else {
+      // n > 6 attributes
+      tableHtml += renderAttributeRow(remainingAttributeKeys.slice(0, 3), selectedProduct1, selectedProduct2);
+
+      // Middle attributes: render each one individually in its own row
+      const middleKeys = remainingAttributeKeys.slice(3, n - 3);
+      middleKeys.forEach((key) => {
+        tableHtml += renderAttributeRow([key], selectedProduct1, selectedProduct2);
+      });
+
+      // Group last 3 attributes
+      tableHtml += renderAttributeRow(remainingAttributeKeys.slice(n - 3), selectedProduct1, selectedProduct2);
+    }
 
     comparisonTableContainer.innerHTML = tableHtml; // Inject generated HTML
   } else {
