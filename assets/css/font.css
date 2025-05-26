@@ -1,13 +1,13 @@
 @font-face {
   font-family: "Roboto";
-  src: url("/assets/font/Roboto-VariableFont_wdth\,wght.ttf") format("truetype");
+  src: url("../font/Roboto-VariableFont_wdth\,wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Roboto";
-  src: url("/assets/font/Roboto-Italic-VariableFont_wdth\,wght.ttf") format("truetype");
+  src: url("../font/Roboto-Italic-VariableFont_wdth\,wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: italic;
 }
