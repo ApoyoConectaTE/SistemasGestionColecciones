@@ -237,7 +237,7 @@ const platformData = [
     Escalabilidad: "Alta",
     Costos: "Modelo híbrido",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_omeka.webp",
+    logo: "assets/img/Logo_omeka.png",
   },
   {
     Nombre: "Wax",
@@ -249,7 +249,7 @@ const platformData = [
     Escalabilidad: "Baja",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_wax.webp",
+    logo: "assets/img/Logo_wax.png",
   },
   {
     Nombre: "Collection builder",
@@ -261,7 +261,7 @@ const platformData = [
     Escalabilidad: "Baja",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_collection.webp",
+    logo: "assets/img/Logo_collection.png",
   },
   {
     Nombre: "AtoM",
@@ -273,7 +273,7 @@ const platformData = [
     Escalabilidad: "Alta",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_atom.webp",
+    logo: "assets/img/Logo_atom.png",
   },
   {
     Nombre: "CONTENTdm",
@@ -291,7 +291,7 @@ const platformData = [
     Escalabilidad: "Alta",
     Costos: "De pago",
     "Tipo de licencia": "Propietaria",
-    logo: "assets/img/Logo_oclc.webp",
+    logo: "assets/img/Logo_oclc.png",
   },
   {
     Nombre: "Tropy",
@@ -308,7 +308,7 @@ const platformData = [
     Escalabilidad: "Alta",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_tropy.webp",
+    logo: "assets/img/Logo_tropy.png",
   },
   {
     Nombre: "Transkribus",
@@ -320,7 +320,7 @@ const platformData = [
     Escalabilidad: "Media",
     Costos: "Modelo híbrido",
     "Tipo de licencia": "Propietaria",
-    logo: "assets/img/Logo_transkribus.webp",
+    logo: "assets/img/Logo_transkribus.png",
   },
   {
     Nombre: "Mukurtu",
@@ -336,7 +336,7 @@ const platformData = [
     Escalabilidad: "Alta",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_mukurtu.webp",
+    logo: "assets/img/Logo_mukurtu.png",
   },
   {
     Nombre: "Scalar",
@@ -348,7 +348,7 @@ const platformData = [
     Escalabilidad: "Media",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_scalar.webp",
+    logo: "assets/img/Logo_scalar.png",
   },
   {
     Nombre: "Islandora",
@@ -366,7 +366,7 @@ const platformData = [
     Escalabilidad: "Alta",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_islandora.webp",
+    logo: "assets/img/Logo_islandora.png",
   },
   {
     Nombre: "CollectiveAccess",
@@ -383,7 +383,7 @@ const platformData = [
     Escalabilidad: "Alta",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_collective.webp",
+    logo: "assets/img/Logo_collective.png",
   },
   {
     Nombre: "DSpace",
@@ -400,7 +400,7 @@ const platformData = [
     Escalabilidad: "Alta",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_space.webp",
+    logo: "assets/img/Logo_space.png",
   },
   {
     Nombre: "Fedora Commons",
@@ -412,7 +412,7 @@ const platformData = [
     Escalabilidad: "Alta",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_fedora.webp",
+    logo: "assets/img/Logo_fedora.png",
   },
   {
     Nombre: "Greenstone",
@@ -430,7 +430,7 @@ const platformData = [
     Escalabilidad: "Media",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_greenstone.webp",
+    logo: "assets/img/Logo_greenstone.png",
   },
   {
     Nombre: "ResourceSpace",
@@ -448,7 +448,7 @@ const platformData = [
     Escalabilidad: "Alta",
     Costos: "Modelo híbrido",
     "Tipo de licencia": "Código abierto",
-    logo: "assets/img/Logo_resource.webp",
+    logo: "assets/img/Logo_resource.png",
   },
   {
     Nombre: "PastPerfect Museum Software",
@@ -460,6 +460,6 @@ const platformData = [
     Escalabilidad: "Media",
     Costos: "De pago",
     "Tipo de licencia": "Propietaria",
-    logo: "assets/img/Logo_past.webp",
+    logo: "assets/img/Logo_past.png",
   },
 ];

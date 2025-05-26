@@ -13,10 +13,14 @@
     color: var(--color-quaternary);
     cursor: pointer;
     transition: background 0.3s;
-  }
 
-  button:hover,
-  .button:hover {
-    background: var(--color-secondary);
+    &:hover {
+      background: var(--color-secondary);
+    }
+
+    img {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
   }
 }

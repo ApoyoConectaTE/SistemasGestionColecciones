@@ -22,30 +22,30 @@
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     pointer-events: none;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
 
-  .tooltip-text::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50);
-    border-width: 0.3125rem;
-    border-style: solid;
-    border-color: transparent transparent #333 transparent;
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50);
+      border-width: 0.3125rem;
+      border-style: solid;
+      border-color: transparent transparent #333 transparent;
+    }
   }
 
   .tooltip-checkbox {
     display: none;
+
+    &:checked + .tooltip-button-click + .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
-  .tooltip-checkbox:checked + .tooltip-button-click + .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .tooltip-close-button {
+  .tooltip-checkbox .tooltip-close-button {
     position: absolute;
     top: 0.3rem;
     right: 0.5rem;

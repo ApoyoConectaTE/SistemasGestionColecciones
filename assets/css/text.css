@@ -19,6 +19,10 @@
       gap: var(--gap);
       font-weight: var(--font-weight-normal);
 
+      img {
+        width: 2rem;
+      }
+
       &.right {
         flex-direction: row-reverse;
         justify-content: flex-end;
