@@ -72,6 +72,10 @@
       outline: none;
       border: 0;
     }
+
+    select:open {
+      background-image: url(../img/Icon_row_2.webp);
+    }
   }
 
   .logos {
