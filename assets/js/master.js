@@ -7,6 +7,17 @@ const noSelectionMessage = document.getElementById("no-selection-message");
 let selectedProduct1 = null;
 let selectedProduct2 = null;
 
+// Map specific "Acciones" items to unique colors
+const ACCIONES_COLOR_MAP = {
+  "Organización y gestión de archivos": "#d86445",
+  "Diseño y creación de metadatos": "#fb9a67",
+  "Conformidad y validación con respecto a estándares": "#ffc7b3",
+  "Interfaces de presentación, navegación, visualización": "#165f7f",
+  "Alojamiento y transmisión en línea": "#458799",
+  Digitalización: "#5fb9dd",
+  "Procesamiento de texto": "#bbefff",
+};
+
 /**
  * Populates the dropdowns with platform names.
  */
@@ -14,6 +25,19 @@ function populateDropdowns() {
   // Clear existing options
   selectProduct1.innerHTML = "";
   selectProduct2.innerHTML = "";
+
+  // Helper function to create the default "placeholder" option
+  const createDefaultOption = () => {
+    const option = document.createElement("option");
+    option.value = ""; // No value, to indicate placeholder
+    option.textContent = "Selecciona un sistema";
+    option.selected = true;
+    option.disabled = true;
+    return option;
+  };
+
+  selectProduct1.appendChild(createDefaultOption());
+  selectProduct2.appendChild(createDefaultOption());
 
   platformData.forEach((product) => {
     const option1 = document.createElement("option");
@@ -27,16 +51,10 @@ function populateDropdowns() {
     selectProduct2.appendChild(option2);
   });
 
-  // Set initial selections
-  if (platformData.length >= 2) {
-    selectProduct1.value = platformData[0].Nombre;
-    selectProduct2.value = platformData[1].Nombre;
-    selectedProduct1 = platformData[0];
-    selectedProduct2 = platformData[1];
-  } else if (platformData.length === 1) {
-    selectProduct1.value = platformData[0].Nombre;
-    selectedProduct1 = platformData[0];
-  }
+  // Ensure global selected product variables are null initially,
+  // as the "Selecciona un ítem" option is now selected by default in the UI.
+  selectedProduct1 = null;
+  selectedProduct2 = null;
 
   renderComparisonTable(); // Render table with initial selections
 }
@@ -68,11 +86,25 @@ function renderAttributeRow(attributeNames, product1Data, product2Data) {
     if (attributeNames.length === 1) {
       // Single attribute: render it to take full width (col-12)
       const attrName = attributeNames[0];
-      const value = productData.hasOwnProperty(attrName) ? productData[attrName] : "-";
+      let displayValueHtml;
+
+      if (attrName === "Acciones" && productData.hasOwnProperty(attrName) && Array.isArray(productData[attrName])) {
+        displayValueHtml = productData[attrName]
+          .map((action, index) => {
+            // Look up the color for the specific action string, fallback to a default if not found
+            const color = ACCIONES_COLOR_MAP[action] || "#ECEFF1"; // Default light grey if action not mapped
+            return `<span style="background-color: ${color}73; border-color: ${color};" class="p-x-1 m-r-1">${action}</span>`;
+          })
+          .join("");
+      } else {
+        const value = productData.hasOwnProperty(attrName) ? productData[attrName] : "-";
+        displayValueHtml = formatValue(value);
+      }
+
       return `
         <div class="col-12 p-y-1 p-x-1">
           <p class="m-b-0 destacado"><strong>${attrName}:</strong></p>
-          <p class="m-b-0">${formatValue(value)}</p>
+          <p class="m-b-0 tags">${displayValueHtml}</p>
         </div>
       `;
     } else {
@@ -197,18 +229,25 @@ function renderComparisonTable() {
  * @param {number} productNum - Identifier for which product (1 or 2) is being changed.
  */
 function handleProductChange(event, productNum) {
-  const selectedName = event.target.value;
-  const product = platformData.find((p) => p.Nombre === selectedName);
+  const selectedValue = event.target.value;
+  let productToSet = null; // Default to null (handles "Selecciona un ítem")
 
-  if (!product) {
-    console.error(`Producto no encontrado con el nombre: ${selectedName}`);
-    return;
+  if (selectedValue === "") {
+    // "Selecciona un ítem" was chosen, productToSet remains null.
+  } else {
+    const foundProduct = platformData.find((p) => p.Nombre === selectedValue);
+    if (foundProduct) {
+      productToSet = foundProduct;
+    } else {
+      console.error(`Producto no encontrado con el nombre: ${selectedValue}`);
+      // productToSet remains null, effectively unselecting or handling the error state.
+    }
   }
 
   if (productNum === 1) {
-    selectedProduct1 = product;
+    selectedProduct1 = productToSet;
   } else {
-    selectedProduct2 = product;
+    selectedProduct2 = productToSet;
   }
   renderComparisonTable(); // Re-render table with new selections
 }
@@ -229,10 +268,10 @@ const platformData = [
     Alfabetismos: "Medio",
     Mantenimiento: "Medio",
     Acciones: [
-      "Organización  y gestión de archivos",
-      "diseño y creación de metadatos",
-      "conformidad y validación con respecto a estándares",
-      "Interfaces  de presentación, navegación, visualización",
+      "Organización y gestión de archivos",
+      "Diseño y creación de metadatos",
+      "Conformidad y validación con respecto a estándares",
+      "Interfaces de presentación, navegación, visualización",
     ],
     Escalabilidad: "Alta",
     Costos: "Modelo híbrido",
@@ -245,7 +284,7 @@ const platformData = [
     Estándares: "Agnóstico",
     Alfabetismos: "Alto",
     Mantenimiento: "Bajo",
-    Acciones: ["Interfaces  de presentación, navegación, visualización", "Organización  y gestión de archivos"],
+    Acciones: ["Interfaces de presentación, navegación, visualización", "Organización y gestión de archivos"],
     Escalabilidad: "Baja",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
@@ -257,7 +296,7 @@ const platformData = [
     Estándares: "Agnóstico",
     Alfabetismos: "Medio",
     Mantenimiento: "Bajo",
-    Acciones: ["Interfaces  de presentación, navegación, visualización", "Organización  y gestión de archivos"],
+    Acciones: ["Interfaces de presentación, navegación, visualización", "Organización y gestión de archivos"],
     Escalabilidad: "Baja",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
@@ -269,7 +308,7 @@ const platformData = [
     Estándares: "ISAD(G), ISAAR CPF, ISDF",
     Alfabetismos: "Alto",
     Mantenimiento: "Alto",
-    Acciones: ["Organización  y gestión de archivos", "conformidad y validación con respecto a estándares"],
+    Acciones: ["Organización y gestión de archivos", "Conformidad y validación con respecto a estándares"],
     Escalabilidad: "Alta",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
@@ -282,11 +321,11 @@ const platformData = [
     Alfabetismos: "Bajo",
     Mantenimiento: "Bajo",
     Acciones: [
-      "Organización  y gestión de archivos",
-      "diseño y creación de metadatos",
-      "conformidad y validación con respecto a estándares",
-      "Interfaces  de presentación, navegación, visualización",
-      "alojamiento y transmisión en línea",
+      "Organización y gestión de archivos",
+      "Diseño y creación de metadatos",
+      "Conformidad y validación con respecto a estándares",
+      "Interfaces de presentación, navegación, visualización",
+      "Alojamiento y transmisión en línea",
     ],
     Escalabilidad: "Alta",
     Costos: "De pago",
@@ -300,10 +339,10 @@ const platformData = [
     Alfabetismos: "Medio",
     Mantenimiento: "Medio",
     Acciones: [
-      "Organización  y gestión de archivos",
-      "diseño y creación de metadatos",
-      "conformidad y validación con respecto a estándares",
-      "Interfaces  de presentación, navegación, visualización",
+      "Organización y gestión de archivos",
+      "Diseño y creación de metadatos",
+      "Conformidad y validación con respecto a estándares",
+      "Interfaces de presentación, navegación, visualización",
     ],
     Escalabilidad: "Alta",
     Costos: "Gratuito",
@@ -329,9 +368,9 @@ const platformData = [
     Alfabetismos: "Medio",
     Mantenimiento: "Alto",
     Acciones: [
-      "Organización  y gestión de archivos",
-      "conformidad y validación con respecto a estándares",
-      "Interfaces  de presentación, navegación, visualización",
+      "Organización y gestión de archivos",
+      "Conformidad y validación con respecto a estándares",
+      "Interfaces de presentación, navegación, visualización",
     ],
     Escalabilidad: "Alta",
     Costos: "Gratuito",
@@ -344,7 +383,7 @@ const platformData = [
     Estándares: "RDF",
     Alfabetismos: "Alto",
     Mantenimiento: "Alto",
-    Acciones: ["Organización  y gestión de archivos", "Interfaces  de presentación, navegación, visualización"],
+    Acciones: ["Organización y gestión de archivos", "Interfaces de presentación, navegación, visualización"],
     Escalabilidad: "Media",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
@@ -357,11 +396,11 @@ const platformData = [
     Alfabetismos: "Alto",
     Mantenimiento: "Alto",
     Acciones: [
-      "Organización  y gestión de archivos",
-      "diseño y creación de metadatos",
-      "conformidad y validación con respecto a estándares",
+      "Organización y gestión de archivos",
+      "Diseño y creación de metadatos",
+      "Conformidad y validación con respecto a estándares",
       "Digitalización",
-      "Interfaces  de presentación, navegación, visualización",
+      "Interfaces de presentación, navegación, visualización",
     ],
     Escalabilidad: "Alta",
     Costos: "Gratuito",
@@ -375,10 +414,10 @@ const platformData = [
     Alfabetismos: "Alto",
     Mantenimiento: "Alto",
     Acciones: [
-      "Organización  y gestión de archivos",
-      "diseño y creación de metadatos",
-      "conformidad y validación con respecto a estándares",
-      "Interfaces  de presentación, navegación, visualización",
+      "Organización y gestión de archivos",
+      "Diseño y creación de metadatos",
+      "Conformidad y validación con respecto a estándares",
+      "Interfaces de presentación, navegación, visualización",
     ],
     Escalabilidad: "Alta",
     Costos: "Gratuito",
@@ -392,10 +431,10 @@ const platformData = [
     Alfabetismos: "Medio",
     Mantenimiento: "Medio",
     Acciones: [
-      "Organización  y gestión de archivos",
-      "diseño y creación de metadatos",
-      "conformidad y validación con respecto a estándares",
-      "Interfaces  de presentación, navegación, visualización",
+      "Organización y gestión de archivos",
+      "Diseño y creación de metadatos",
+      "Conformidad y validación con respecto a estándares",
+      "Interfaces de presentación, navegación, visualización",
     ],
     Escalabilidad: "Alta",
     Costos: "Gratuito",
@@ -408,7 +447,7 @@ const platformData = [
     Estándares: "RDF, Dublin Core, PREMIS",
     Alfabetismos: "Alto",
     Mantenimiento: "Alto",
-    Acciones: ["Organización  y gestión de archivos", "diseño y creación de metadatos", "conformidad y validación con respecto a estándares"],
+    Acciones: ["Organización y gestión de archivos", "Diseño y creación de metadatos", "Conformidad y validación con respecto a estándares"],
     Escalabilidad: "Alta",
     Costos: "Gratuito",
     "Tipo de licencia": "Código abierto",
@@ -421,11 +460,11 @@ const platformData = [
     Alfabetismos: "Medio",
     Mantenimiento: "Medio",
     Acciones: [
-      "Organización  y gestión de archivos",
-      "diseño y creación de metadatos",
-      "Interfaces  de presentación, navegación, visualización",
-      "alojamiento y transmisión en línea",
-      "conformidad y validación con respecto a estándares",
+      "Organización y gestión de archivos",
+      "Diseño y creación de metadatos",
+      "Interfaces de presentación, navegación, visualización",
+      "Alojamiento y transmisión en línea",
+      "Conformidad y validación con respecto a estándares",
     ],
     Escalabilidad: "Media",
     Costos: "Gratuito",
@@ -439,11 +478,11 @@ const platformData = [
     Alfabetismos: "Bajo",
     Mantenimiento: "Medio",
     Acciones: [
-      "Organización  y gestión de archivos",
-      "diseño y creación de metadatos",
-      "conformidad y validación con respecto a estándares",
-      "Interfaces  de presentación, navegación, visualización",
-      "alojamiento y transmisión en línea",
+      "Organización y gestión de archivos",
+      "Diseño y creación de metadatos",
+      "Conformidad y validación con respecto a estándares",
+      "Interfaces de presentación, navegación, visualización",
+      "Alojamiento y transmisión en línea",
     ],
     Escalabilidad: "Alta",
     Costos: "Modelo híbrido",
@@ -456,7 +495,7 @@ const platformData = [
     Estándares: "Propio (exporta a Dublin Core, EAD)",
     Alfabetismos: "Bajo",
     Mantenimiento: "Medio",
-    Acciones: ["Organización  y gestión de archivos", "diseño y creación de metadatos", "Interfaces  de presentación, navegación, visualización"],
+    Acciones: ["Organización y gestión de archivos", "Diseño y creación de metadatos", "Interfaces de presentación, navegación, visualización"],
     Escalabilidad: "Media",
     Costos: "De pago",
     "Tipo de licencia": "Propietaria",

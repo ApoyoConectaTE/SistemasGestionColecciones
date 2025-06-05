@@ -57,24 +57,14 @@
       padding: 8px 30px;
       text-align: center;
       background-color: var(--color-secondary);
-      background-image: url(../img/Icon_row.webp);
-      background-position: calc(100% - 10px) center;
-      background-repeat: no-repeat;
       color: var(--color-quaternary);
       font-size: 18px;
       font-weight: var(--font-weight-bold);
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
     }
 
     select:focus {
       outline: none;
       border: 0;
-    }
-
-    select:open {
-      background-image: url(../img/Icon_row_2.webp);
     }
   }
 
@@ -85,5 +75,13 @@
 
   .item:last-child {
     border: 0;
+  }
+
+  .tags {
+    span {
+      border: 1px solid;
+      padding: 2px 8px;
+      line-height: 2;
+    }
   }
 }
