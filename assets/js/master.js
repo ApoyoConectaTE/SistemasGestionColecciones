@@ -113,7 +113,7 @@ function renderAttributeRow(attributeNames, product1Data, product2Data) {
         .map((attrName) => {
           const value = productData.hasOwnProperty(attrName) ? productData[attrName] : "-";
           return `
-            <div class="col-4 item border-r p-y-1 p-x-1">
+            <div class="col-12 item border-b p-y-1 p-x-1">
               <p class="m-b-0 destacado"><strong>${attrName}:</strong></p>
               <p class="m-b-0">${formatValue(value)}</p>
             </div>
@@ -128,12 +128,12 @@ function renderAttributeRow(attributeNames, product1Data, product2Data) {
 
   return `
       <div class="row p-r-1">
-        <div class="col-6 border">
+        <div class="col-6 border-l border-r border-b">
           <div class="row">
           ${product1HtmlContent}
           </div>
         </div>
-        <div class="col-6 border">
+        <div class="col-6 border-l border-r border-b">
           <div class="row">
             ${product2HtmlContent}
           </div>
@@ -154,12 +154,12 @@ function renderComparisonTable() {
 
     let tableHtml = `
           <div class="row p-r-1">
-              <div class="col-6 align-content-center border">
+              <div class="col-6 align-content-center border border-b-0">
                   <a href="${selectedProduct1.Enlace}" target="_blank" rel="noopener noreferrer">
                   <img class="logos" src="${selectedProduct1.logo}" alt="${selectedProduct1.Nombre}">
                   </a>
               </div>
-              <div class="col-6 align-content-center border">
+              <div class="col-6 align-content-center border border-b-0">
                   <a href="${selectedProduct2.Enlace}" target="_blank" rel="noopener noreferrer">
                       <img class="logos" src="${selectedProduct2.logo}" alt="${selectedProduct2.Nombre}">
                   </a>
