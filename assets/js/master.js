@@ -129,14 +129,10 @@ function renderAttributeRow(attributeNames, product1Data, product2Data) {
   return `
       <div class="row p-r-1">
         <div class="col-6 border-l border-r border-b">
-          <div class="row">
           ${product1HtmlContent}
-          </div>
         </div>
         <div class="col-6 border-l border-r border-b">
-          <div class="row">
-            ${product2HtmlContent}
-          </div>
+          ${product2HtmlContent}
         </div>
       </div>
   `;
@@ -193,27 +189,11 @@ function renderComparisonTable() {
       return a.localeCompare(b); // Fallback for keys not in desiredOrderForRemaining
     });
 
-    const n = remainingAttributeKeys.length;
-
-    if (n === 0) {
-      // No more attributes to display after "Acciones"
-    } else if (n <= 3) {
-      tableHtml += renderAttributeRow(remainingAttributeKeys, selectedProduct1, selectedProduct2);
-    } else if (n > 3 && n <= 6) {
-      tableHtml += renderAttributeRow(remainingAttributeKeys.slice(0, 3), selectedProduct1, selectedProduct2);
-      tableHtml += renderAttributeRow(remainingAttributeKeys.slice(3), selectedProduct1, selectedProduct2);
-    } else {
-      // n > 6 attributes
-      tableHtml += renderAttributeRow(remainingAttributeKeys.slice(0, 3), selectedProduct1, selectedProduct2);
-
-      // Middle attributes: render each one individually in its own row
-      const middleKeys = remainingAttributeKeys.slice(3, n - 3);
-      middleKeys.forEach((key) => {
+    // Render each remaining attribute in its own row
+    if (remainingAttributeKeys.length > 0) {
+      remainingAttributeKeys.forEach((key) => {
         tableHtml += renderAttributeRow([key], selectedProduct1, selectedProduct2);
       });
-
-      // Group last 3 attributes
-      tableHtml += renderAttributeRow(remainingAttributeKeys.slice(n - 3), selectedProduct1, selectedProduct2);
     }
 
     comparisonTableContainer.innerHTML = tableHtml; // Inject generated HTML
@@ -257,7 +237,46 @@ selectProduct1.addEventListener("change", (e) => handleProductChange(e, 1));
 selectProduct2.addEventListener("change", (e) => handleProductChange(e, 2));
 
 // Initial population and rendering when the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", populateDropdowns);
+document.addEventListener("DOMContentLoaded", () => {
+  populateDropdowns();
+
+  // --- Tooltip Exclusive Open Logic ---
+  const tooltipCheckboxes = document.querySelectorAll(".tooltip-checkbox");
+
+  tooltipCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
+      // 'this' refers to the checkbox that triggered the event
+      if (this.checked) {
+        // If this checkbox is now checked (tooltip opened),
+        // then uncheck all other checkboxes.
+        tooltipCheckboxes.forEach((otherCheckbox) => {
+          if (otherCheckbox !== this && otherCheckbox.checked) {
+            otherCheckbox.checked = false;
+          }
+        });
+      }
+    });
+  });
+
+  // --- Close Tooltip on Outside Click ---
+  document.addEventListener("click", function (event) {
+    // Iterate over all tooltip checkboxes
+    tooltipCheckboxes.forEach((checkbox) => {
+      // Check if this particular tooltip is currently open
+      if (checkbox.checked) {
+        const tooltipContainer = checkbox.closest(".tooltip-container");
+
+        // If the click target is NOT the tooltip's container itself or any element within it,
+        // then close this tooltip.
+        // Clicks on the tooltip's button (label) or its content area are contained within tooltipContainer,
+        // so this condition correctly allows those interactions without closing.
+        if (tooltipContainer && !tooltipContainer.contains(event.target)) {
+          checkbox.checked = false; // Uncheck the box to close the tooltip
+        }
+      }
+    });
+  });
+});
 
 // Data for the platforms in JSON format
 const platformData = [
